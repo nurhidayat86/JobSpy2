@@ -2,6 +2,17 @@
 
 **JobSpy** is a job scraping library with the goal of aggregating all the jobs from popular job boards with one tool.
 
+## About this fork
+
+This repository is a fork of **[speedyapply/JobSpy](https://github.com/speedyapply/JobSpy)**. The public JobSpy project lives there; this fork keeps the same package layout (`import jobspy`, `scrape_jobs`, etc.) but updates the runtime stack:
+
+- **Python** 3.12 (required; `>=3.12,<3.13` in `pyproject.toml`)
+- **NumPy** 2.4.x (`>=2.4.4`)
+- **Pandas** 3.0.x (`>=3.0.2`)
+- **Pydantic** v2 (e.g. `model_dump` instead of deprecated `dict()` on models)
+
+Scraper behavior follows upstream unless noted in commit history. For the canonical docs and community, see [speedyapply/JobSpy](https://github.com/speedyapply/JobSpy).
+
 ## Features
 
 - Scrapes job postings from **LinkedIn**, **Indeed**, **Glassdoor**, **Google**, **ZipRecruiter**, & other job boards concurrently
@@ -10,13 +21,64 @@
 
 ![jobspy](https://github.com/cullenwatson/JobSpy/assets/78247585/ec7ef355-05f6-4fd3-8161-a817e31c5c57)
 
+### Requirements
+
+- **Python [3.12](https://www.python.org/downloads/release/python-3120/)** (this fork does not support 3.10/3.11.)
+- **NumPy** and **Pandas** versions pinned in `pyproject.toml` / `poetry.lock` (tested with NumPy 2.4.4 and Pandas 3.0.2).
+
 ### Installation
 
-```
-pip install -U python-jobspy
+The project uses **Poetry’s** `poetry-core` build backend; `pip` will pull that automatically.
+
+1. Clone this repository and enter the new directory:
+
+```bash
+git clone https://github.com/nurhidayat86/JobSpy2.git
+cd JobSpy2
 ```
 
-_Python version >= [3.10](https://www.python.org/downloads/release/python-3100/) required_
+2. Use a **Python 3.12** virtual environment (venv, conda, or another tool).
+
+3. Install the package:
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install .
+```
+
+**Editable install** (while changing code under `jobspy/`):
+
+```bash
+python -m pip install -e .
+```
+
+**Build a wheel** without installing into the active environment:
+
+```bash
+python -m pip install wheel
+python -m pip wheel . -w dist
+```
+
+Wheels and sdists appear under `dist/`. You can install a built wheel with `python -m pip install dist/python_jobspy-*.whl` (exact filename depends on version).
+
+#### Conda example
+
+```bash
+conda create -n jobspy2 python=3.12 -y
+conda activate jobspy2
+cd JobSpy2   # or the full path where you cloned https://github.com/nurhidayat86/JobSpy2.git
+python -m pip install .
+```
+
+If your environment sets **`SSL_CERT_FILE`** or **`REQUESTS_CA_BUNDLE`**, `requests` will use them automatically (useful behind corporate TLS inspection).
+
+#### Quick check
+
+This repo includes `test_jobspy_readme_example.py`, which runs the usage example below and writes `jobs.csv`:
+
+```bash
+python test_jobspy_readme_example.py
+```
 
 ### Usage
 
